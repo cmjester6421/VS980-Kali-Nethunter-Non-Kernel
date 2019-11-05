@@ -1,8 +1,6 @@
 package com.offsec.nethunter;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -10,7 +8,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,7 +35,7 @@ import java.util.regex.Pattern;
 //import android.app.Fragment;
 //import android.support.v4.app.FragmentActivity;
 
-public class ManaFragment extends Fragment implements ActionBar.TabListener {
+public class ManaFragment extends Fragment {
 
     private ViewPager mViewPager;
 
@@ -48,15 +46,12 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
     private static NhPaths nh;
     private String configFilePath;
 
-    public ManaFragment() {
-
-    }
-
     public static ManaFragment newInstance(int sectionNumber) {
         ManaFragment fragment = new ManaFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -69,7 +64,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
         mViewPager = (ViewPager) rootView.findViewById(R.id.pagerMana);
         mViewPager.setAdapter(tabsPagerAdapter);
 
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 //actionBar.setSelectedNavigationItem(position);
@@ -211,27 +206,10 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
         nh.showMessage("Mana Stopped");
     }
 
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
-
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
+    public class TabsPagerAdapter extends FragmentPagerAdapter {
 
 
-    //	 public static class TabsPagerAdapter extends FragmentPagerAdapter {
-    public static class TabsPagerAdapter extends FragmentStatePagerAdapter {
-
-
-        public TabsPagerAdapter(FragmentManager fm) {
+        TabsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -296,7 +274,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
 
 
     public static class HostapdFragment extends Fragment {
-        // private String configFilePath = nh.CHROOT_PATH + "/etc/hostapd.conf";
+
         private final String configFilePath = nh.APP_SD_FILES_PATH + "/configs/hostapd-karma.conf";
 
         @Override
@@ -316,7 +294,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    if(getView() == null){
+                    if (getView() == null) {
                         return;
                     }
                     EditText ifc = (EditText) getView().findViewById(R.id.ifc);
@@ -326,7 +304,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
                     EditText enableKarma = (EditText) getView().findViewById(R.id.enable_karma);
                     EditText karmaLoud = (EditText) getView().findViewById(R.id.karma_loud);
                     // FIXED BY BINKYBEAR <3
-                    if(source != null){
+                    if (source != null) {
                         source = source.replaceAll("(?m)^interface=(.*)$", "interface=" + ifc.getText().toString());
                         source = source.replaceAll("(?m)^bssid=(.*)$", "bssid=" + bssid.getText().toString());
                         source = source.replaceAll("(?m)^ssid=(.*)$", "ssid=" + ssid.getText().toString());
@@ -345,7 +323,6 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
 
 
         public void loadOptions(View rootView) {
-
 
 
             final EditText ifc = (EditText) rootView.findViewById(R.id.ifc);
@@ -390,45 +367,45 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
                         /*
                          * Interface
                          */
-                        if (matcherIfc.find()) {
-                            String ifcValue = matcherIfc.group(1);
-                            ifc.setText(ifcValue);
-                        }
+                            if (matcherIfc.find()) {
+                                String ifcValue = matcherIfc.group(1);
+                                ifc.setText(ifcValue);
+                            }
                         /*
                          * bssid
                          */
-                        if (matcherBssid.find()) {
-                            String bssidVal = matcherBssid.group(1);
-                            bssid.setText(bssidVal);
-                        }
+                            if (matcherBssid.find()) {
+                                String bssidVal = matcherBssid.group(1);
+                                bssid.setText(bssidVal);
+                            }
                         /*
                          * ssid
                          */
-                        if (matcherSsid.find()) {
-                            String ssidVal = matcherSsid.group(1);
-                            ssid.setText(ssidVal);
-                        }
+                            if (matcherSsid.find()) {
+                                String ssidVal = matcherSsid.group(1);
+                                ssid.setText(ssidVal);
+                            }
                         /*
                          * channel
                          */
-                        if (matcherChannel.find()) {
-                            String channelVal = matcherChannel.group(1);
-                            channel.setText(channelVal);
-                        }
+                            if (matcherChannel.find()) {
+                                String channelVal = matcherChannel.group(1);
+                                channel.setText(channelVal);
+                            }
                         /*
                          * enable_mana
                          */
-                        if (matcherEnableKarma.find()) {
-                            String enableKarmaVal = matcherEnableKarma.group(1);
-                            enableKarma.setText(enableKarmaVal);
-                        }
+                            if (matcherEnableKarma.find()) {
+                                String enableKarmaVal = matcherEnableKarma.group(1);
+                                enableKarma.setText(enableKarmaVal);
+                            }
                        /*
                        * mana_loud
                        */
-                        if (matcherKarmaLoud.find()) {
-                            String karmaLoudVal = matcherKarmaLoud.group(1);
-                            karmaLoud.setText(karmaLoudVal);
-                        }
+                            if (matcherKarmaLoud.find()) {
+                                String karmaLoudVal = matcherKarmaLoud.group(1);
+                                karmaLoud.setText(karmaLoudVal);
+                            }
                         }
                     });
                 }
@@ -471,7 +448,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    if(getView() == null){
+                    if (getView() == null) {
                         return;
                     }
                     EditText ifc = (EditText) getView().findViewById(R.id.wpe_ifc);
@@ -480,7 +457,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
                     EditText channel = (EditText) getView().findViewById(R.id.wpe_channel);
                     EditText privatekey = (EditText) getView().findViewById(R.id.wpe_private_key);
 
-                    if(source != null){
+                    if (source != null) {
                         source = source.replaceAll("(?m)^interface=(.*)$", "interface=" + ifc.getText().toString());
                         source = source.replaceAll("(?m)^bssid=(.*)$", "bssid=" + bssid.getText().toString());
                         source = source.replaceAll("(?m)^ssid=(.*)$", "ssid=" + ssid.getText().toString());
@@ -579,7 +556,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
 
     public static class DhcpdFragment extends Fragment {
 
-        private final String configFilePath = nh.CHROOT_PATH +"/etc/dhcp/dhcpd.conf";
+        private final String configFilePath = nh.CHROOT_PATH + "/etc/dhcp/dhcpd.conf";
         final ShellExecuter exe = new ShellExecuter();
 
         @Override
@@ -600,7 +577,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
                 public void onClick(View v) {
                     EditText source = (EditText) rootView.findViewById(R.id.source);
                     Boolean isSaved = exe.SaveFileContents(source.getText().toString(), configFilePath);
-                    if(isSaved){
+                    if (isSaved) {
                         nh.showMessage("Source updated");
                     } else {
                         nh.showMessage("Source not updated");
@@ -615,6 +592,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
 
         private String configFilePath;
         final ShellExecuter exe = new ShellExecuter();
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -633,7 +611,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(getView() == null){
+                    if (getView() == null) {
                         return;
                     }
                     EditText source = (EditText) getView().findViewById(R.id.source);
@@ -659,9 +637,9 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
             desc.setText(getResources().getString(R.string.mana_nat_full));
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                configFilePath = nh.CHROOT_PATH +"/usr/share/mana-toolkit/run-mana/start-nat-full-lollipop.sh";
+                configFilePath = nh.CHROOT_PATH + "/usr/share/mana-toolkit/run-mana/start-nat-full-lollipop.sh";
             } else {
-                configFilePath = nh.CHROOT_PATH +"/usr/share/mana-toolkit/run-mana/start-nat-full-kitkat.sh";
+                configFilePath = nh.CHROOT_PATH + "/usr/share/mana-toolkit/run-mana/start-nat-full-kitkat.sh";
             }
 
 
@@ -672,7 +650,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(getView() == null){
+                    if (getView() == null) {
                         return;
                     }
                     EditText source = (EditText) getView().findViewById(R.id.source);
@@ -695,9 +673,9 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.source_short, container, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                configFilePath = nh.CHROOT_PATH +"/usr/share/mana-toolkit/run-mana/start-nat-simple-lollipop.sh";
+                configFilePath = nh.CHROOT_PATH + "/usr/share/mana-toolkit/run-mana/start-nat-simple-lollipop.sh";
             } else {
-                configFilePath = nh.CHROOT_PATH +"/usr/share/mana-toolkit/run-mana/start-nat-simple-kitkat.sh";
+                configFilePath = nh.CHROOT_PATH + "/usr/share/mana-toolkit/run-mana/start-nat-simple-kitkat.sh";
             }
 
             String description = getResources().getString(R.string.mana_nat_simple);
@@ -713,7 +691,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(getView() == null){
+                    if (getView() == null) {
                         return;
                     }
                     EditText source = (EditText) getView().findViewById(R.id.source);
@@ -736,7 +714,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.source_short, container, false);
 
-            configFilePath = nh.CHROOT_PATH +"/usr/bin/start-nat-transproxy-lollipop.sh";
+            configFilePath = nh.CHROOT_PATH + "/usr/bin/start-nat-transproxy-lollipop.sh";
 
             String description = getResources().getString(R.string.mana_bettercap_description);
             TextView desc = (TextView) rootView.findViewById(R.id.description);
@@ -750,7 +728,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(getView() == null){
+                    if (getView() == null) {
                         return;
                     }
                     EditText source = (EditText) getView().findViewById(R.id.source);
@@ -787,7 +765,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(getView() == null){
+                    if (getView() == null) {
                         return;
                     }
                     EditText source = (EditText) getView().findViewById(R.id.source);
@@ -831,7 +809,7 @@ public class ManaFragment extends Fragment implements ActionBar.TabListener {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(getView() == null){
+                    if (getView() == null) {
                         return;
                     }
                     EditText source = (EditText) getView().findViewById(R.id.source);

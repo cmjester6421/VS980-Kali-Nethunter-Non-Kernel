@@ -50,7 +50,7 @@ nethunter-app
   java
     com.offsec.nethunter <-- Contains the source for application
       GPS <-- Handles NMEA data for chroot GPS
-      receiver <-- For "run at boot service"
+      updateReceiver <-- For "run at boot service"
       service  <-- For "run at boot service"
       utils    <-- Misc system variables and shell executer. Controls Nethunter paths also
     res
@@ -62,6 +62,7 @@ nethunter-app
       etc.init.d <-- Startup scripts
       files
       nh_files   <-- Copied to sdcard
+        deauth <-- Used by the Deauthenticator.
         configs  <-- Config files used by apps
         duckscripts <-- Some default ducky scripts
         modules     <-- Mainly used by duckhunter.  Contains keyseed.py which does all the HID work.
